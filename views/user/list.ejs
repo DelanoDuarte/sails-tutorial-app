@@ -1,0 +1,27 @@
+<h1>Listing users</h1>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    <% users.forEach( function( model ) { %>
+        <tr>
+            <td>
+                <%= model[user].name %>
+            </td>
+            <td>
+                <%= model[user].email %>
+            </td>
+            <td><a href="/user/show/<%= model[user].id %>">Show</a></td>
+            <td><a href="/user/edit/<%= model[user].id %>">Edit</a></td>
+            <% }) %>
+        </tr>
+
+</table>
+
+<br />
