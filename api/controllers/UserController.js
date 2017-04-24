@@ -7,19 +7,16 @@
 
 module.exports = {
 
-    list: function (req, res) {
+    list: function (req, res, next) {
 
-        User.find().exec(function (error, users) {
+        User.find(function foundUsers(error, users) {
 
-            if (error) return res.send(error, 500);
+            if (error) return next(error);
 
-            res.json(users);
-
+            res.view({
+                users: users
+            });
         });
-    },
-
-    'list': function (req, res) {
-        res.view();
     },
 
     'new': function (req, res) {
@@ -55,6 +52,32 @@ module.exports = {
             res.view({
                 user: user
             });
+        });
+    },
+
+    edit: function (req, res, next) {
+
+        User.findOne(req.param('id'), function foundUser(error, user) {
+
+            if (error) return next(error);
+            if (!user) return next();
+
+            res.view({
+                user: user
+            });
+        });
+    },
+
+
+    update: function (req, res, next) {
+
+        User.update(req.param('id'), req.params.all(), function userUpdate(error) {
+
+            if (error) {
+                return res.redirect('/user/edit/' + req.param('id'));
+            }
+
+            res.redirect('/user/show/' + req.param('id'));
         });
     }
 };
